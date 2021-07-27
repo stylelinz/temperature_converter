@@ -10,16 +10,22 @@ temperatures.forEach(temperatureInput => {
 
 const convertFunctions = {
   Celsius () {
-    temperatureElements.Fahrenheit.value = (temperatureElements.Celsius.value * 1.8 + 32).toFixed(2)
+    temperatureElements.Fahrenheit.value = (+this.value * 1.8 + 32).toFixed(2)
+    temperatureElements.Kelvin.value = (+this.value + 273.15).toFixed(2)
   },
   Fahrenheit () {
-    temperatureElements.Celsius.value = ((temperatureElements.Fahrenheit.value - 32) / 1.8).toFixed(2)
+    temperatureElements.Celsius.value = ((+this.value - 32) / 1.8).toFixed(2)
+    temperatureElements.Kelvin.value = ((+this.value + 459.67) / 1.8).toFixed(2)
+  },
+  Kelvin () {
+    temperatureElements.Celsius.value = (+this.value - 273.15).toFixed(2)
+    temperatureElements.Fahrenheit.value = (+this.value * 1.8 - 459.67).toFixed(2)
   }
 }
 
 converterForm.addEventListener('input', (event) => {
   const { id } = event.target
-  convertFunctions[id]()
+  convertFunctions[id].call(event.target)
 })
 
 function validInput (event) {
